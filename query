@@ -1,0 +1,34 @@
+# This PubMed query returns all articles published by the University of New
+# Mexico from 2016/01/01 to present. This file can be edited to contain any
+# valid PubMed query.
+
+(
+  (
+    (
+      (
+        UNM[AD]
+        OR HSC[AD]
+        OR UNMHSC[AD]
+      )
+        AND Albuquerque[AD]
+    )
+      NOT
+    (
+      Sandia[AD]
+      OR
+      VA[AD]
+      OR
+      Lovelace[AD]
+    )
+  )
+    OR "University of New Mexico"[AD]
+    OR "The University of New Mexico"[AD]
+    OR "1 University of New Mexico"[AD]
+    OR "Univ of New Mexico"[AD]
+    OR "University of New Mexico’s"[AD]
+    OR 87131[AD]
+)
+AND
+(
+  "2016/01/01"[Date - Publication] : "3000"[Date - Publication]
+)
