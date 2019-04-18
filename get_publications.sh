@@ -7,7 +7,7 @@
 # 
 # Usage: ./pubmed_query.sh <query_file> <output_file>
 
-echo Submiting query located in $1 to PubMed...
+echo Submiting $1 to PubMed...
 query=$(cat $1 | egrep -v '^#|^$' | tr -d '\n' | sed -e 's/( \{1,\}/(/g' -e 's/ \{1,\})/)/g' -e 's/ \{1,\}/%20/g')
 esearch_url="https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=${query}&usehistory=y$retmax=100000"
 esearch_result=$(curl -s -g $esearch_url)
@@ -43,8 +43,10 @@ select
   , properties
 from tmp
 inner join pubmed
-on pubmed.description like '%' || abbr1 || '%'
-or pubmed.description like '%' || abbr2 || '%'
+on pubmed.description like abbr1 || '%'
+or pubmed.description like abbr2 || '%'
+or pubmed.description like '% ' || abbr1 || '%'
+or pubmed.description like '% ' || abbr2 || '%'
 where substr(pubmed.shortdetails, 1, instr(pubmed.shortdetails,'. ')-1) not in
 (
   select
