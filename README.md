@@ -5,6 +5,9 @@ _April 17, 2019_
 The purpose of this script is to allow users to quickly and easily create
 faculty bibliographies using PubMed.
 
+# Requirements
+`csvkit v1.0.4` which can be obtained [here](https://csvkit.readthedocs.io/en/latest/)
+
 ```
 # usage
 ./create-bibs.sh <query_file> <output_file>
