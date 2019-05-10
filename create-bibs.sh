@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # Michael L. Bernauer
-# pubmed_query.sh
+# create-bibs.sh 
 #
 # This script is used to query PubMed and return a CSV of results
 # 
-# Usage: ./pubmed_query.sh <query_file> <output_file>
+# Usage: ./create-bibs.sh <query_file> <output_file>
 
 echo Submiting $1 to PubMed...
 query=$(cat $1 | egrep -v '^#|^$' | tr -d '\n' | sed -e 's/( \{1,\}/(/g' -e 's/ \{1,\})/)/g' -e 's/ \{1,\}/%20/g')
@@ -47,12 +47,6 @@ on pubmed.description like abbr1 || '%'
 or pubmed.description like abbr2 || '%'
 or pubmed.description like '% ' || abbr1 || '%'
 or pubmed.description like '% ' || abbr2 || '%'
-where substr(pubmed.shortdetails, 1, instr(pubmed.shortdetails,'. ')-1) not in
-(
-  select
-    *
-  from blacklist
-)
 order by department, last_name
 EOM
 
@@ -60,5 +54,5 @@ echo Retrieving query results from PubMed...
 curl -s -g $efetch_url | sed 's/,$//g' | tr [:lower:] [:upper:] > pubmed
 
 echo Merging PubMed results to faculty list and saving results to $2...
-csvsql --query "${sql}" blacklist pubmed faculty.csv > $2
+csvsql --query "${sql}" pubmed faculty.csv > $2
 rm pubmed
